@@ -61,22 +61,23 @@ echo %DEPLOYMENT_TARGET%
 IF EXIST "%DEPLOYMENT_SOURCE%\composer.json" (
   cd %DEPLOYMENT_SOURCE%
   
-  php -r "echo 'testing';"
+  call :ExecuteCmd php -r "echo 'starting deployment!';"
+
   IF NOT EXIST "%DEPLOYMENT_SOURCE%\composer.phar" (
     echo Composer.phar not found. Downloading...
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-    php composer-setup.php
-    php -r "unlink('composer-setup.php');"
+    call :ExecuteCmd php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    call :ExecuteCmd php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    call :ExecuteCmd php composer-setup.php
+    call :ExecuteCmd php -r "unlink('composer-setup.php');"
     IF !ERRORLEVEL! NEQ 0 goto error
   ) ELSE (
       echo Attempting to update composer.phar
-      php composer.phar self-update
+      call :ExecuteCmd php composer.phar self-update
   )
 
   echo Has composer.phar now
 
-  php composer.phar install --no-dev
+  call :ExecuteCmd php composer.phar install --no-dev
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
@@ -86,7 +87,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-call php artisan migrate --force
+call :ExecuteCmd php artisan migrate --force
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
