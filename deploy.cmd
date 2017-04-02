@@ -81,13 +81,14 @@ IF EXIST "%DEPLOYMENT_SOURCE%\composer.json" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 2. KuduSync
+:: 2. Migrate Database
+call :ExecuteCmd php artisan migrate --force
+
+:: 3. KuduSync
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd,composer.phar"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
-
-call :ExecuteCmd php artisan migrate --force
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
