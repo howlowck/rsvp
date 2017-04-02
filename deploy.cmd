@@ -67,9 +67,11 @@ IF EXIST "%DEPLOYMENT_SOURCE%\composer.json" (
     IF !ERRORLEVEL! NEQ 0 goto error
   ) ELSE (
       echo Attempting to update composer.phar
-      php composer.phar self-update
+      call php composer.phar self-update
   )
-  
+
+  echo "has composer.phar"
+
   call php composer.phar install --no-dev
   IF !ERRORLEVEL! NEQ 0 goto error
 )
@@ -80,7 +82,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-php artisan migrate --force
+call php artisan migrate --force
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
