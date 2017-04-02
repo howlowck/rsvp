@@ -16,5 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('test', function () {
-    dd(\App\Guest::all());
+    dd(config('database'), \App\Guest::all());
 });
