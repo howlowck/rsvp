@@ -61,7 +61,7 @@ echo %DEPLOYMENT_TARGET%
 IF EXIST "%DEPLOYMENT_SOURCE%\composer.json" (
   cd %DEPLOYMENT_SOURCE%
   echo composer.json exists
-  call php -v
+  call php -r
   IF NOT EXIST "%DEPLOYMENT_SOURCE%\composer.phar" (
     echo Composer.phar not found. Downloading...
     call curl -s https://getcomposer.org/installer | php
