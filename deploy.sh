@@ -1,20 +1,31 @@
 #!/usr/bin/env bash
 
 command -v node >/dev/null 2>&1 || {
-  echo "Missing node.js executable, please install node.js, if already installed make sure it can be reached from current environment.";
-  exit 1;
+  echo "Missing node.js executable, please install node.js, if already installed make sure it can be reached from current environment."
+  exit 1
 }
 
-CURRENTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-ARTIFACTS="$CURRENTDIR/../artifacts";
-echo $ARTIFACTS;
-if [ -z ${DEPLOYMENT_SOURCE+x} ]; then DEPLOYMENT_SOURCE=$CURRENTDIR;
-if [ -z ${DEPLOYMENT_TARGET+x} ]; then DEPLOYMENT_TARGET="$ARTIFACTS/wwwroot";
-if [ -z ${NEXT_MANIFEST_PATH+x} ]; then NEXT_MANIFEST_PATH="$ARTIFACTS/manifest";
-if [ -z ${PREVIOUS_MANIFEST_PATH+x} ]; then PREVIOUS_MANIFEST_PATH="$ARTIFACTS/manifest";
+CURRENTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ARTIFACTS="$CURRENTDIR/../artifacts"
+echo $ARTIFACTS
+if [ -z ${DEPLOYMENT_SOURCE+x} ]
+then DEPLOYMENT_SOURCE=$CURRENTDIR
+fi
 
-echo $DEPLOYMENT_SOURCE;
-echo $DEPLOYMENT_TARGET;
+if [ -z ${DEPLOYMENT_TARGET+x} ]
+then DEPLOYMENT_TARGET="$ARTIFACTS/wwwroot"
+fi
+
+if [ -z ${NEXT_MANIFEST_PATH+x} ]
+then NEXT_MANIFEST_PATH="$ARTIFACTS/manifest"
+fi
+
+if [ -z ${PREVIOUS_MANIFEST_PATH+x} ]
+then PREVIOUS_MANIFEST_PATH="$ARTIFACTS/manifest"
+fi
+
+echo $DEPLOYMENT_SOURCE
+echo $DEPLOYMENT_TARGET
 
 command -v kudusync >/dev/null 2>&1 || {
   echo "Installing Kudu Sync on npm"
@@ -30,7 +41,7 @@ echo "target: $DEPLOYMENT_TARGET"
 
 if [ -e "$DEPLOYMENT_SOURCE/composer.json"]
 then
-  php -r "echo 'starting deployment!'"
+  php -r "echo 'starting deployment!';"
   if [ ! -e "$DEPLOYMENT_SOURCE/composer.phar"]
   then
     EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
