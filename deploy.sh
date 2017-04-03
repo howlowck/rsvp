@@ -42,18 +42,19 @@ echo "target: $DEPLOYMENT_TARGET"
 if [ -e "$CURRENTDIR/composer.json" ]
 then
   echo "Start composer setup"
+  echo $(eval php -v)
   if [ ! -e "$CURRENTDIR/composer.phar" ]
   then
-    echo "composer not found. Installing..."
-    curl -s https://getcomposer.org/installer | eval php
+    echo "composer not found. Downloading..."
+    curl -s https://getcomposer.org/installer | php
     echo "composer is downloaded"
   else
     echo "composer.phar found! updating..."
-    eval php composer.phar self-update
+    php composer.phar self-update
   fi
 
   echo "Install composer packages now"
-  eval php composer.phar install --no-dev
+  php composer.phar install --no-dev
 fi
 
 php artisan migrate --force
