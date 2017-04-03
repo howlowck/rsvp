@@ -39,10 +39,10 @@ echo "Handling PHP Web Site deployment."
 echo "source: $DEPLOYMENT_SOURCE"
 echo "target: $DEPLOYMENT_TARGET"
 
-if [ -e "$DEPLOYMENT_SOURCE/composer.json"]
+if [ -e "$CURRENTDIR/composer.json" ]
 then
   php -r "echo 'starting deployment!';"
-  if [ ! -e "$DEPLOYMENT_SOURCE/composer.phar"]
+  if [ ! -e "$CURRENTDIR/composer.phar" ]
   then
     EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
