@@ -45,15 +45,15 @@ then
   if [ ! -e "$CURRENTDIR/composer.phar" ]
   then
     echo "composer not found. Installing..."
-    curl -s https://getcomposer.org/installer | php
+    curl -s https://getcomposer.org/installer | eval php
     echo "composer is downloaded"
   else
     echo "composer.phar found! updating..."
-    php composer.phar self-update
+    eval php composer.phar self-update
   fi
 
   echo "Install composer packages now"
-  php composer.phar install --no-dev
+  eval php composer.phar install --no-dev
 fi
 
 php artisan migrate --force
