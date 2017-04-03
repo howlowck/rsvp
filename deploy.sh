@@ -42,7 +42,7 @@ echo "target: $DEPLOYMENT_TARGET"
 if [ -e "$CURRENTDIR/composer.json" ]
 then
   echo "Start composer setup"
-  echo $(eval php -v)
+  php -v
   if [ ! -e "$CURRENTDIR/composer.phar" ]
   then
     echo "composer not found. Downloading..."
