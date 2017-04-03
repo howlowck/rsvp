@@ -16,12 +16,14 @@ if [ -z ${DEPLOYMENT_TARGET+x} ]
 then DEPLOYMENT_TARGET="$ARTIFACTS/wwwroot"
 fi
 
-if [ -z ${NEXT_MANIFEST_PATH+x} ]
-then NEXT_MANIFEST_PATH="$ARTIFACTS/manifest"
-fi
+if [[ ! -n "$NEXT_MANIFEST_PATH" ]]
+then
+  NEXT_MANIFEST_PATH=$ARTIFACTS/manifest
 
-if [ -z ${PREVIOUS_MANIFEST_PATH+x} ]
-then PREVIOUS_MANIFEST_PATH="$ARTIFACTS/manifest"
+  if [[ ! -n "$PREVIOUS_MANIFEST_PATH" ]]
+  then
+    PREVIOUS_MANIFEST_PATH=$NEXT_MANIFEST_PATH
+  fi
 fi
 
 echo $DEPLOYMENT_SOURCE
@@ -35,9 +37,6 @@ command -v kudusync >/dev/null 2>&1 || {
 # Deployment
 
 echo "Handling PHP Web Site deployment."
-
-echo "source: $DEPLOYMENT_SOURCE"
-echo "target: $DEPLOYMENT_TARGET"
 
 if [ -e "$CURRENTDIR/composer.json" ]
 then
@@ -59,4 +58,8 @@ fi
 
 php artisan migrate --force
 
+echo "source: $DEPLOYMENT_SOURCE"
+echo "target: $DEPLOYMENT_TARGET"
+echo "next manifest: $NEXT_MANIFEST_PATH"
+echo "prev manifest: $PREVIOUS_MANIFEST_PATH"
 kudusync -v 50 -f $DEPLOYMENT_SOURCE -t $DEPLOYMENT_TARGET -n $NEXT_MANIFEST_PATH -p $PREVIOUS_MANIFEST_PATH -i ".git;.hg;.deployment;deploy.sh,composer.phar"
