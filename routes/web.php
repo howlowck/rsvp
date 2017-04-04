@@ -16,5 +16,15 @@ Route::get('/', function () {
 });
 
 Route::get('test', function () {
-    dd(\App\Guest::all());
+    return view('home'); 
 });
+
+Route::get('login', 'AuthController@login');
+
+Route::post('submit-auth', 'AuthController@attempt');
+
+Route::get('logout', 'AuthController@logout');
+
+Route::get('import/guests', 'ImportController@guests');
+
+Route::post('import/upload-guests', 'ImportController@uploadGuests');

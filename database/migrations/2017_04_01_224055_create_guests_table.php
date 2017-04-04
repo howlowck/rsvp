@@ -15,9 +15,12 @@ class CreateGuestsTable extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('honorific');
+            $table->string('honorific')->nullable();
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
+            $table->string('email')->nullable();
+            $table->boolean('addressee_code')->unique()->nullable();
+            $table->text('addressee_notes')->nullable();
         });
     }
 
@@ -28,6 +31,6 @@ class CreateGuestsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('guests');
     }
 }

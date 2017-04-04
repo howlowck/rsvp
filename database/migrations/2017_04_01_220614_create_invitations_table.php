@@ -16,7 +16,7 @@ class CreateInvitationsTable extends Migration
         Schema::create('invitations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('invite_code');
-            $table->boolean('plus_one');
+            $table->boolean('plus_one')->default(false); //if there is no known significant others
             $table->boolean('confirmed')->default(false);
             $table->string('address_street');
             $table->string('address_city');
@@ -32,6 +32,6 @@ class CreateInvitationsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('invitations');
+        Schema::dropIfExists('invitations');
     }
 }
