@@ -16,7 +16,20 @@ Route::get('/', function () {
 });
 
 Route::get('test', function () {
-    return view('home'); 
+     $data = [
+        'logoImageUrl' => '',
+        'headerColor' => 'red',
+        'title' => '',
+        'mainBodyColor' => 'green',
+        'mainMessage' => '',
+        'heroPictureUrl' => '',
+        'heroPictureAltText' => '',
+        'actionText' => '',
+        'ctaTitle' => '',
+        'ctaMessage' => '',
+        'actionUrl' => '',
+        'actionText' => ''];
+    return view('layouts.heroEmail', $data);
 });
 
 Route::get('login', 'AuthController@login');
