@@ -4,6 +4,7 @@
     <h2>Mailing Address for {{$guest->nickname}}</h2>
     <form action="/form" method="post">
         {{csrf_field()}}
+        <input type="hidden" name="addressee_code" value="{{$guest->addressee_code}}" >
         <h5>Your Info</h3>
         <label for="phone">Phone</label>
         <br>

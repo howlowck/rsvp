@@ -47,4 +47,4 @@ Route::resource('guests', 'GuestController');
 Route::resource('invitations', 'InvitationController');
 
 Route::get('form', 'GuestController@addresseeForm');
-Route::post('form', 'GuestController@addresseeForm');
+Route::post('form', 'GuestController@postAddresseeForm');

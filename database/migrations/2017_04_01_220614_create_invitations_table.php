@@ -21,6 +21,7 @@ class CreateInvitationsTable extends Migration
             $table->string('address_street');
             $table->string('address_city');
             $table->string('address_zipcode');
+            $table->timestamps();
             $table->text('notes');
         });
     }

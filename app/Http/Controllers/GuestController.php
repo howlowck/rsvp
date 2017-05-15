@@ -101,7 +101,7 @@ class GuestController extends Controller
 
     public function postAddresseeForm(Request $request)
     {
-        $addresseeCode = $request->query('code');
+        $addresseeCode = $request->get('addressee_code');
 
         if (is_null($addresseeCode)) {
             return 'There is no code';
