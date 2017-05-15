@@ -1,5 +1,5 @@
 <template>
-    <form :action="actionRoute" method="post">
+    <form :action="actionRoute" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_token" :value="token">
         <div class="form-group">
             <label :for="name">File input</label>
