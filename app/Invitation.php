@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invitation extends Model
 {
-    public function plusOnes() {
-        return $this->hasMany('App\Guests');
+    public function guests() {
+        return $this->hasMany('App\Guest');
     }
 }

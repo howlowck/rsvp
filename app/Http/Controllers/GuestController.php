@@ -114,18 +114,21 @@ class GuestController extends Controller
         }
 
         $invitation = $guest->invitation;
+        $invitationFields = ['address_street', 'address_city', 'address_zipcode'];
 
         if (is_null($invitation)) {
             $invitation = new \App\Invitation();
-
+            $invitation->invite_code = $guest->addressee_code;
+            foreach($invitationFields as $field) {
+                $invitation->$field = $request->get($field);
+            }
             $invitation->save();
             $guest->invitation()->associate($invitation);
+            return view('guests.thank_you');
         }
+        
 
-        $invitationFields = ['address_street', 'address_city', 'address_zipcode'];
-        foreach($invitationFields as $field) {
-            $invitation->$field = $request->get($field);
-        }
+        
 
         $invitation->save();
 

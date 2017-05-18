@@ -16,9 +16,12 @@ class ImportController extends Controller
     public function uploadGuests(Request $req) {
         $path = $req->file('guests')->path();
         $reader = Reader::createFromPath($path);
-        $keys = ['nickname', 'honorific', 'first_name', 'last_name', 'email'];
+        $keys = ['nickname', 'honorific', 'first_name', 'last_name', 'email', 'guests'];
         $iterator = $reader->fetchAssoc(0);
         foreach ($iterator as $row) {
+            if ($row['first_name'] == '') {
+                continue;
+            }
             $guest = new Guest();
             $guest->nickname = $row['nickname'];
             $guest->honorific = $row['honorific'];
@@ -34,6 +37,13 @@ class ImportController extends Controller
                 $guest->save();
                 Log::error($e->getMessage());
             }
+
+            $invitation = new \App\Invitation();
+            $invitation->invite_code = $guest->addressee_code;
+            $invitation->total_guests = $row['guests'];
+            $invitation->save();
+            $guest->invitation()->associate($invitation);
+            $guest->save();
         }
         return redirect('/guests');
     }
