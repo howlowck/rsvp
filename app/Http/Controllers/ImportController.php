@@ -45,6 +45,6 @@ class ImportController extends Controller
             $guest->invitation()->associate($invitation);
             $guest->save();
         }
-        return redirect('/guests');
+        return redirect('/invitations');
     }
 }
