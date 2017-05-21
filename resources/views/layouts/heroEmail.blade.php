@@ -271,6 +271,11 @@
                 min-width: 0
             }
         }
+
+        a:visited{
+            color: {{$ctaTextColor}};
+        }
+        
     </style>
     <table class="body" data-made-with-foundation="" style="Margin:0;background:#f3f3f3;border-collapse:collapse;border-spacing:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;height:100%;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;width:100%">
         <tbody>
@@ -293,7 +298,7 @@
                                                                             <tbody>
                                                                                 <tr style="padding:0;text-align:left;vertical-align:top">
                                                                                     <th style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                        <!--Logo-->                                    <img src="{{$logoImageUrl}}" alt="logo" style="-ms-interpolation-mode:bicubic;clear:both;display:block;max-width:100%;outline:0;text-decoration:none;width:auto">
+                                        <!--Logo-->                                    <img src="{{$logoImageUrl}}" alt="{{$logoImageAltText}}" style="-ms-interpolation-mode:bicubic;clear:both;display:block;max-width:100%;outline:0;text-decoration:none;width:auto">
                                                                                     </th>
                                                                                 </tr>
                                                                             </tbody>
