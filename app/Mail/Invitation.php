@@ -42,7 +42,7 @@ class Invitation extends Mailable
             'ctaTitle' => "Hello $guest->honorific $guest->first_name $guest->last_name,",
             'ctaTextColor' => '#F7ECB4',
             'ctaMessage' => "We are so excited to invite you to our wedding on July 8th at Prairie Productions! Please let us know if you can make it by following your personalized link below.",
-            'actionUrl' => 'http://localhost:1313/#rsvp?code=' . $guest->addressee_code,
+            'actionUrl' => config('app.site_url') . '/#rsvp?code=' . $guest->addressee_code,
             'actionText' => 'RSVP Now',
             'actionBackgroundColor' => '#F7ECB4',
             'actionTextColor' => '#262E30',
