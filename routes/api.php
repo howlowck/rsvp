@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Invitation;
+use App\Guest;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,40 +29,68 @@ Route::post('/invitations/guest', function (Request $request) {
     $invitation->invitation_viewed = true;
     $invitation->save();
 
-    return response()->json([
+    return response()->json(['result' => [
         'addressee' => [
             'honorific' => $addressee->honorific,
             'first_name' => $addressee->first_name,
-            'last_name' => $addressee->last_name
+            'last_name' => $addressee->last_name,
+            'phone' => $addressee->phone,
         ],
         'invitation' => $invitation->toArray()
-    ]);
-    // return json({result: })
+    ]]);
 });
 
 Route::post('/invitations/rsvp', function (Request $request) {
     $invitation = Invitation::where('invite_code', $request->get('code'))->first();
+
     if ( is_null($invitation)) {
         return response()->json(["result" => null]);
     }
 
     $guests = $invitation->guests;
+
     $addressee = $guests->filter(function ($guest) {
         return !! $guest->addressee_code;
     })->first();
 
-    $invitation->invitation_viewed = true;
-    $invitation->save();
+    $addressee->phone = $request->get('phone');
+    $addressee->save();
 
-    return response()->json([
-        'addressee' => [
-            'honorific' => $addressee->honorific,
-            'first_name' => $addressee->first_name,
-            'last_name' => $addressee->last_name
-        ],
-        'invitation' => $invitation->toArray()
-    ]);
-    // return json({result: })
+    if ($invitation->confirmed) {
+        $plusOnes = $guests->filter(function ($guest) {
+            return ! $guest->addressee_code;
+        });
+
+        $plusOnes->each(function ($plusOne) {
+            $plusOne->delete();
+        });
+    }
+
+    if ($request->has('guests')) {
+         foreach($request->get('guests') as $newGuestInfo) {
+            $newGuest = new Guest();
+            $newGuest->first_name = $newGuestInfo['first_name'];
+            $newGuest->last_name = $newGuestInfo['last_name'];
+            $newGuest->invitation()->associate($invitation);
+            $newGuest->save();
+        }
+    }
+   
+    $invitation->confirmed = true;
+    
+    if ($request->get('attending') === 'will-attend') {
+        $invitation->will_come = true;
+        $invitation->cannot_come = false;
+    } else {
+        $invitation->will_come = false;
+        $invitation->cannot_come = true;
+    }
+
+    $invitation->favorite_song = $request->get('songs');
+    $invitation->notes = $request->get('notes');
+
+    $invitation->save();
+    return response()->json(["result" => 'processed']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

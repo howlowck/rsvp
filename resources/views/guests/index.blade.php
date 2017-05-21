@@ -26,7 +26,14 @@
             <td class="note">{{$guest->addressee_notes}}</td>
             <td class="addressee-viewed">{{$guest->addressee_viewed}}</td>
             <td class="actions">
-               <a href="{{'/invitations/create?guest=' . $guest->id}}">Create an Invitation</a>
+               @if ( ! $guest->invitation->invitation_sent)
+               <form action="invitations/send-email" method="post">
+                 <input name="guest" value="{{$guest->id}}" type="hidden" />
+                 <button class="btn btn-primary" type="submit">Send Invitation Email</button>
+               </form>
+               @else
+               <p>Invite Sent</p>
+               @endif
             </td>
         </tr>
         @endforeach

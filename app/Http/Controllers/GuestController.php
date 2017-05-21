@@ -7,6 +7,10 @@ use App\Guest;
 
 class GuestController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,7 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $guests = Guest::all();
+        $guests = Guest::with('invitation')->get();
         return view('guests.index', compact('guests'));
     }
 
@@ -127,9 +131,6 @@ class GuestController extends Controller
             return view('guests.thank_you');
         }
         
-
-        
-
         $invitation->save();
 
     }

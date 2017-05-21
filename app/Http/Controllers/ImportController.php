@@ -23,11 +23,11 @@ class ImportController extends Controller
                 continue;
             }
             $guest = new Guest();
-            $guest->nickname = $row['nickname'];
-            $guest->honorific = $row['honorific'];
-            $guest->first_name = $row['first_name'];
-            $guest->last_name = $row['last_name'];
-            $guest->email = $row['email'];
+            $guest->nickname = trim($row['nickname']);
+            $guest->honorific = trim($row['honorific']);
+            $guest->first_name = trim($row['first_name']);
+            $guest->last_name = trim($row['last_name']);
+            $guest->email = trim($row['email']);
             $guest->addressee_code = uniqid_real();
             $guest->addressee_viewed = false;
             try{

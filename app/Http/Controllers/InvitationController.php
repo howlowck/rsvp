@@ -3,9 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Invitation;
+
 
 class InvitationController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +21,8 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        //
+        $guests = \App\Guest::whereNotNull('addressee_code')->with('invitation')->get();
+        return view('invitations.index', compact('guests'));
     }
 
     /**
@@ -91,5 +100,18 @@ class InvitationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function sendEmail(Request $request)
+    {
+        $guestId = $request->get('guest');
+        $guest = \App\Guest::find($guestId);
+        $invitation = $guest->invitation;
+
+        Mail::to($guest->email)->send(new Invitation($guest));
+
+        $invitation->invitation_sent = true;
+        $invitation->save();
+        return redirect('/invitations');
     }
 }
