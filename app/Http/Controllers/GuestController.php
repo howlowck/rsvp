@@ -62,7 +62,8 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $guest = Guest::find($id);
+        return view('guests.edit', compact(['guest']));
     }
 
     /**
@@ -74,7 +75,13 @@ class GuestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $guest = Guest::find($id);
+        $guest->first_name = $request->get('first_name');
+        $guest->last_name = $request->get('last_name');
+        $guest->email = $request->get('email');
+        $guest->phone = $request->get('phone');
+        $guest->save();
+        return redirect('/invitations/' . $guest->invitation->id);
     }
 
     /**

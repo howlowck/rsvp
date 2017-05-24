@@ -78,7 +78,9 @@ class InvitationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $invitation = Invitation::find($id);
+
+        return view('invitations.edit', compact(['invitation']));
     }
 
     /**
@@ -90,7 +92,11 @@ class InvitationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $invitation = Invitation::find($id);
+        $invitation->total_guests = $request->get('total_guests');
+        $invitation->invitation_sent = $request->get('invitation_sent');
+        $invitation->save();
+        return redirect('/invitations/' . $id);
     }
 
     /**
