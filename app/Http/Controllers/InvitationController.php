@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Invitation;
+use App\Invitation;
 
 
 class InvitationController extends Controller
@@ -65,7 +65,9 @@ class InvitationController extends Controller
      */
     public function show($id)
     {
-        //
+        $invitation = Invitation::with('guests')->find($id);
+        
+        return view('invitations.show', compact(['invitation']));
     }
 
     /**
@@ -108,7 +110,7 @@ class InvitationController extends Controller
         $guest = \App\Guest::find($guestId);
         $invitation = $guest->invitation;
 
-        Mail::to($guest->email)->send(new Invitation($guest));
+        Mail::to($guest->email)->send(new \App\Mail\Invitation($guest));
 
         $invitation->invitation_sent = true;
         $invitation->save();

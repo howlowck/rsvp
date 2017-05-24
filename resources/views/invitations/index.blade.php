@@ -33,6 +33,7 @@
             <td class="notes">{{$guest->invitation->notes}}</td>
             
             <td class="email">
+               {{$guest->email}}<br>
                @if ( ! $guest->invitation->invitation_sent)
                <form action="invitations/send-email" method="post">
                  {{csrf_field()}}
