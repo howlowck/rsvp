@@ -2,6 +2,9 @@
 
 @section('content')
     <h2>Invitations</h2>
+    <div class="summary">
+      <p>Total Guests Confirmed: {{$totalGuestsComing}}</p>
+    </div>
     <table class="table">
       <thead>
         {{-- <th>ID</th> --}}
@@ -9,7 +12,7 @@
         {{-- <th>First Name</th> --}}
         {{-- <th>Last Name</th> --}}
         <th>Name</th>
-        <th>Last Name</th>
+        {{-- <th>Last Name</th> --}}
         {{-- <th>Email</th> --}}
         <th>Notes</th>
         <th>Email</th>
@@ -27,8 +30,9 @@
             @if ($guest->first_name !== $guest->nickname)
             ({{$guest->nickname}})
             @endif
+            &nbsp;{{$guest->last_name}}
             </td>
-            <td class="last-name">{{$guest->last_name}}</td>
+            {{-- <td class="last-name"></td> --}}
             {{-- <td class="email">{{$guest->email}}</td> --}}
             <td class="notes">{{$guest->invitation->notes}}</td>
             

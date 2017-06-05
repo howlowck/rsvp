@@ -22,7 +22,12 @@ class InvitationController extends Controller
     public function index()
     {
         $guests = \App\Guest::whereNotNull('addressee_code')->with('invitation')->get();
-        return view('invitations.index', compact('guests'));
+        $allComingGuests = \App\Guest::whereHas('invitation', function ($query) {
+            $query->where('will_come', true);
+        })->get();
+        $totalGuestsComing = $allComingGuests->count();
+
+        return view('invitations.index', compact('guests', 'totalGuestsComing'));
     }
 
     /**
@@ -66,8 +71,10 @@ class InvitationController extends Controller
     public function show($id)
     {
         $invitation = Invitation::with('guests')->find($id);
+        $website = config('app.site_url');
+        $code = $invitation->invite_code;
         
-        return view('invitations.show', compact(['invitation']));
+        return view('invitations.show', compact(['invitation', 'website', 'code']));
     }
 
     /**

@@ -33,4 +33,6 @@
     @endforeach
     </ul>
 
+    <h3>RSVP Link</h3>
+    <a href="{{$website}}/#rsvp?code={{$code}}">RSVP Website</a>
 @endsection
