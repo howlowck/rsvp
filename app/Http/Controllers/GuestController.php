@@ -18,8 +18,13 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $guests = Guest::with('invitation')->get();
-        return view('guests.index', compact('guests'));
+        $guests = \App\Guest::whereHas('invitation', function ($query) {
+            $query->where('will_come', true);
+        })->with('invitation')->get();
+        
+        $invitations = \App\Invitation::where('will_come', true)->with('guests')->get();
+
+        return view('guests.index', compact('guests', 'invitations'));
     }
 
     /**
