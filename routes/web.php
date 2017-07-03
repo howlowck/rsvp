@@ -55,3 +55,8 @@ Route::post('invitations/send-email', 'InvitationController@sendEmail')->middlew
 
 Route::get('form', 'GuestController@addresseeForm');
 Route::post('form', 'GuestController@postAddresseeForm');
+
+Route::get('songs', function() {
+    $songs = \App\Invitation::where('will_come', true)->get()->pluck('favorite_song')->filter()->all();
+    return view('songs', compact('songs'));
+})->middleware('auth');
