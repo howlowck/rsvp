@@ -57,6 +57,6 @@ Route::get('form', 'GuestController@addresseeForm');
 Route::post('form', 'GuestController@postAddresseeForm');
 
 Route::get('songs', function() {
-    $songs = \App\Invitation::where('will_come', true)->get()->pluck('favorite_song')->filter()->all();
-    return view('songs', compact('songs'));
+    $invitations = \App\Invitation::where('will_come', true)->with('guests')->get();
+    return view('songs', compact('invitations'));
 })->middleware('auth');
