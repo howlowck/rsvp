@@ -18,6 +18,13 @@
   .table.round {
       border-radius: 30px;
   }
+  .table.over-capacity {
+    border-color: red;
+  }
+  .table.full-capacity {
+    border-color: green;
+    border-width: 3px;
+  }
 </style>
 @endsection
 
@@ -32,8 +39,8 @@
     @endforeach
 
     @foreach($tables as $table)
-       <div class="table {{$table->type}}" data-id="{{$table->id}}">
-           <div class="name">{{$table->name}}</div>
+       <div class="table {{$table->type}} {{$table->getCssClass()}}" data-id="{{$table->id}}">
+           <div class="name">{{$table->name}} ({{$table->getTotalGuests()}}/{{$table->getCapacity()}} guests)</div>
            <div class="seats">
             @foreach($table->invitations as $invitation)
               <div class="invitation draggable drag-drop" data-id="{{$invitation->id}}" style="margin: 10px; padding: 10px; border: solid 1px black; display: inline-block;">
