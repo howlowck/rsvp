@@ -37,7 +37,9 @@
         @endforeach
       </div>
     @endforeach
-
+    <br />
+    <hr />
+    <br />
     @foreach($tables as $table)
        <div class="table {{$table->type}} {{$table->getCssClass()}}" data-id="{{$table->id}}">
            <div class="name">{{$table->name}} ({{$table->getTotalGuests()}}/{{$table->getCapacity()}} guests)</div>
