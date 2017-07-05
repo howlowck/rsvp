@@ -60,3 +60,12 @@ Route::get('songs', function() {
     $invitations = \App\Invitation::where('will_come', true)->with('guests')->get();
     return view('songs', compact('invitations'));
 })->middleware('auth');
+
+Route::get('tables', function() {
+    $invitations = \App\Invitation::where('will_come', true)->with('guests')->get()->filter(function ($invitation) {
+        return ! $invitation->table_id;
+    });
+
+    $tables = \App\Table::with('invitations')->get();
+    return view('tables', compact('invitations', 'tables'));
+})->middleware('auth');

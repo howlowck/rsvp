@@ -10,6 +10,10 @@ class Invitation extends Model
         return $this->hasMany('App\Guest');
     }
 
+    public function table() {
+        return $this->belongsTo('App\Table');
+    }
+
     public function getAddressee() {
         return $this->guests->filter(function ($guest) {
             return ! is_null($guest->email);

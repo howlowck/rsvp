@@ -97,3 +97,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/assign', function (Request $request) {
+    if ($request->query('table') and $request->query('invitation')) {
+        $tableId = $request->query('table');
+        $invitationId = $request->query('invitation');
+        $table = \App\Table::find($tableId);
+        $invitation = \App\Invitation::find($invitationId);
+        $invitation->table()->associate($table);
+        $invitation->save();
+        return ['result' => 'good'];
+    }
+    return ["result" => 'did nothing'];
+});
